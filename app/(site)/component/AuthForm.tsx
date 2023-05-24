@@ -22,9 +22,9 @@ const AutoForm = () => {
 
     useEffect(() => {
         if (session.status === 'authenticated') {
-            router.push('/user');
+            router.push('/users');
         }
-    }, [session.status]);
+    }, [router, session.status]);
 
     const toggleVariant = useCallback(() => {
         if (variant === 'LOGIN') {
@@ -73,7 +73,7 @@ const AutoForm = () => {
                 }
                 else if (callback?.ok) {
                     toast.success('Logged in!');
-                    router.push('/user');
+                    router.push('/users');
                 }
             }).finally(() => setIsLoading(false));
         }
