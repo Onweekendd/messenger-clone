@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createAt       DateTime  @default(now())
+  updateAt       DateTime  @updatedAt
+
+  conversationIds String[]       @db.ObjectId
+  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
+
+  seenMessageIds String[]  @db.ObjectId
+  seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
+
+  account Account[]
+  message Message[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+  //`onDelete`参数指定了当关联的另一个模型中的数据被删除时，当前模型中的数据应该如何处理。这里使用了`Cascade`选项，表示当关联的另一个模型中的数据被删除时，当前模型中与之关联的数据也应该被删除。
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Conversation {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  createAt      DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  name          String?
+  isGroup       Boolean?
+  messageIds    String[] @db.ObjectId
+  Message Message[]
+
+  userIds String[]  @db.ObjectId
+  user    User[]    @relation(fields: [userIds], references: [id])
+}
+
+model Message {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  body     String?
+  image    String?
+  createAt DateTime @default(now())
+
+  seenIds String[] @db.ObjectId
+  seen    User[]   @relation("Seen", fields: [seenIds], references: [id])
+
+  conversionId String       @db.ObjectId
+  conversion   Conversation @relation(fields: [conversionId], references: [id])
+
+  senderId String @db.ObjectId
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
