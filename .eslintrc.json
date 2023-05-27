@@ -1,38 +1,12 @@
 {
-  "extends": "next/core-web-vitals",
+  "plugins": ["unused-imports"],
+  "extends": ["taro/react", "prettier"],
   "rules": {
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "jsx-quotes": [
-      "error",
-      "prefer-single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "react/self-closing-comp": [
-      "error",
-      {
-        "component": true,
-        "html": true
-      }
-    ],
-    "import/order": [
-      "error",
-      {
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index"
-        ],
-        "newlines-between": "always"
-      }
-    ]
+    "unused-imports/no-unused-imports": "error",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "indent": ["error", 2],
+    "react/jsx-indent-props": [2, 2],
+    "react/self-closing-comp": ["error"]
   }
 }
