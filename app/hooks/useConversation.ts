@@ -1,23 +1,27 @@
-import { useParams } from 'next/navigation';
-import { useMemo } from 'react';
+import {useParams} from "next/navigation"
+import {useMemo} from "react"
 
+//获取url中的conversationId
 const useConversation = () => {
-  const params = useParams();
+  const params = useParams()
 
   const conversationId = useMemo(() => {
     if (!params?.conversationId) {
-      return '';
+      return ""
     }
 
-    return params.conversationId as String;
-  }, [params?.conversationId]);
+    return params.conversationId as String
+  }, [params?.conversationId])
 
-  const isOpen = useMemo(() => !!conversationId, [conversationId]);
+  const isOpen = useMemo(() => !!conversationId, [conversationId])
 
-  return useMemo(() => ({
-    isOpen,
-    conversationId
-  }), [isOpen, conversationId]);
-};
+  return useMemo(
+    () => ({
+      isOpen,
+      conversationId,
+    }),
+    [isOpen, conversationId]
+  )
+}
 
-export default useConversation;
+export default useConversation

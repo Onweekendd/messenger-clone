@@ -28,7 +28,4 @@ module.exports = {
   proseWrap: "preserve",
   // 换行符使用 lf
   endOfLine: "lf",
-
-  templateIndent: 2,
-  htmlWhitespaceSensitivity: "ignore",
 }

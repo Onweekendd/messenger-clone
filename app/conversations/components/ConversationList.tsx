@@ -45,7 +45,7 @@ const ConversationList: React.FC<ConversationListProps> = ({initialiItems}) => {
             text-neutral-800
             "
           >
-            Messagess
+            Messages
           </div>
           <div
             className="
