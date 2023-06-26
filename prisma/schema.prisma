@@ -26,8 +26,26 @@ model User {
   seenMessageIds String[]  @db.ObjectId
   seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
 
-  accounts Account[]
-  messages Message[]
+  receiveRequset FriendRequest[] @relation("Receive")
+  accounts       Account[]
+  messages       Message[]
+  followedBy     Follows[]       @relation("following")
+  following      Follows[]       @relation("follower")
+
+  requset FriendRequest[]
+}
+
+//followedBy Follows[] @relation("following")   被关注
+//following  Follows[] @relation("follower")    关注
+model Follows {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  //主
+  follower    User     @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId  String   @db.ObjectId
+  //客
+  following   User     @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId String   @db.ObjectId
+  createAt    DateTime @default(now())
 }
 
 model Account {
@@ -56,7 +74,7 @@ model Conversation {
   name          String?
   isGroup       Boolean?
   messageIds    String[]  @db.ObjectId
-  messages       Message[]
+  messages      Message[]
 
   userIds String[] @db.ObjectId
   users   User[]   @relation(fields: [userIds], references: [id])
@@ -76,4 +94,20 @@ model Message {
 
   senderId String @db.ObjectId
   sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+model FriendRequest {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  receiverId String       @db.ObjectId
+  receiver   User         @relation("Receive", fields: [receiverId], references: [id])
+  senderId   String       @db.ObjectId
+  sender     User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  status     RequsetSatue
+  createAt   DateTime     @default(now())
+}
+
+enum RequsetSatue {
+  ACCEPT
+  PROCESS
+  DECLINE
 }

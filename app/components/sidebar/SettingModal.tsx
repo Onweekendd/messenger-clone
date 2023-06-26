@@ -30,8 +30,8 @@ const SettingModal: React.FC<SettingModalProps> = ({isOpen, onClose, currentUser
     formState: {errors},
   } = useForm<FieldValues>({
     defaultValues: {
-      name: currentUser.name,
-      image: currentUser.image,
+      name: currentUser?.name,
+      image: currentUser?.image,
     },
   })
 
@@ -104,7 +104,7 @@ const SettingModal: React.FC<SettingModalProps> = ({isOpen, onClose, currentUser
                     width={48}
                     height={48}
                     className="rounded-full"
-                    src={image || currentUser.image || "/images/placeholder.jpg"}
+                    src={image || currentUser?.image || "/images/placeholder.jpg"}
                     alt="Avatar"
                   />
                   <CldUploadButton options={{maxFiles: 1}} onUpload={handleUpload} uploadPreset="ml_default">

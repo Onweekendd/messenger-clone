@@ -94,7 +94,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({data, selected}) => {
                 font-medium
             text-gray-900"
             >
-              {data.name || otherUser.name}
+              {data?.name || otherUser?.name || "unknown name"}
             </p>
             {lastMessage?.createAt && (
               <p
